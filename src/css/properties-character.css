@@ -1,0 +1,87 @@
+#name-background{
+    top: 8.4%;
+    left: 8.5%;
+    width: 27%;
+    height: 2.4%;
+    text-align: center;
+    font-size: 20px;
+}
+#age{
+    top: 6.3%;
+    left: 43.4%;
+    width: 16%;
+    height: 2%;
+}
+#height{
+    top: 6.3%;
+    left: 61.8%;
+    width: 14%;
+    height: 2%;
+}
+#weight{
+    top: 6.3%;
+    left: 77.6%;
+    width: 14%;
+    height: 2%;
+}
+#eyes{
+    top: 9.6%;
+    left: 43.4%;
+    width: 16%;
+    height: 2%;
+}
+#skin{
+    top: 9.6%;
+    left: 61.8%;
+    width: 14%;
+    height: 2%;
+}
+#hair{
+    top: 9.6%;
+    left: 77.6%;
+    width: 14%;
+    height: 2%;
+}
+
+#appearance{
+    top: 16.4%;
+    left: 5.5%;
+    width: 27.3%;
+    height: 27.6%;
+}
+#backstory{
+    top: 48.6%;
+    left: 5.5%;
+    width: 27.3%;
+    height: 46.4%
+}
+#allies{
+    top: 16.4%;
+    left: 36.3%;
+    width: 30.3%;
+    height: 27.6%;
+}
+#symbol_name{
+    top: 19.3%;
+    left: 68.8%;
+    width: 23.1%;
+    height: 2%;
+}
+#symbol{
+    top: 21.6%;
+    left: 68.8%;
+    width: 23.1%;
+    height: 14%;
+}
+#additional_features{
+    top: 47.2%;
+    left: 36.3%;
+    width: 58.3%;
+    height: 25.8%;
+}
+#treasure{
+    top: 76%;
+    left: 36.3%;
+    width: 58.3%;
+    height: 19%;
+}

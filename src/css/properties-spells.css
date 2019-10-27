@@ -1,0 +1,297 @@
+#spellcasting_class{
+    top: 8.4%;
+    left: 8.5%;
+    width: 27%;
+    height: 2.4%;
+    text-align: center;
+    font-size: 20px;
+}
+#spellcasting_ability{
+    top: 6.8%;
+    left: 47%;
+    width: 9.4%;
+    height: 3.6%;
+    text-align: center;
+    font-size: 24px;
+}
+#spell_save_dc{
+    top: 6.8%;
+    left: 63.4%;
+    width: 9.4%;
+    height: 3.6%;
+    text-align: center;
+    font-size: 24px;
+}
+#spell_attack_bonus{
+    top: 6.8%;
+    left: 80.3%;
+    width: 9.4%;
+    height: 3.6%;
+    text-align: center;
+    font-size: 24px;
+}
+
+.slots{
+    width: 6.6%;
+    height: 2.5%;
+    text-align: center;
+    font-size: 18px;
+}
+.slots_expended{
+    width: 15.4%;
+    height: 2.3%;
+    text-align: center;
+    font-size: 16px;
+}
+#slots_lvl_1{ top: 39.5%; left: 8.3%; }
+#slots_expended_lvl_1{ top: 39.6%; left: 16.8%; }
+#slots_lvl_2{ top: 68.2%; left: 8.3%; }
+#slots_expended_lvl_2{ top: 68.3%; left: 16.8%; }
+#slots_lvl_3{ top: 18.4%; left: 39.2%; }
+#slots_expended_lvl_3{ top: 18.5%; left: 47.7%; }
+#slots_lvl_4{ top: 46.8%; left: 39.2%; }
+#slots_expended_lvl_4{ top: 46.9%; left: 47.7%; }
+#slots_lvl_5{ top: 75.3%; left: 39.2%; }
+#slots_expended_lvl_5{ top: 75.4%; left: 47.7%; }
+#slots_lvl_6{ top: 18.4%; left: 69.8%; }
+#slots_expended_lvl_6{ top: 18.5%; left: 78.3%; }
+#slots_lvl_7{ top: 39.75%; left: 69.8%; }
+#slots_expended_lvl_7{ top: 39.85%; left: 78.3%; }
+#slots_lvl_8{ top: 61.1%; left: 69.8%; }
+#slots_expended_lvl_8{ top: 61.2%; left: 78.3%; }
+#slots_lvl_9{ top: 78.8%; left: 69.8%; }
+#slots_expended_lvl_9{ top: 78.9%; left: 78.3%; }
+
+.cantrip{
+    left: 5.4%;
+    width: 27.8%;
+    height: 1.6%
+}
+.spell{
+    width: 26.6%;
+    height: 1.6%;
+}
+.spell_prep{
+    width: 1%;
+    height: 0.9%;
+}
+.spell.spells_col_1{
+    left: 6.6%;
+}
+.spell_prep.spells_col_1{
+    left: 5.3%;
+}
+.spell.spells_col_2{
+    left: 37.5%;
+}
+.spell_prep.spells_col_2{
+    left: 36.15%
+}
+.spell.spells_col_3{
+    left: 68.1%;
+}
+.spell_prep.spells_col_3{
+    left: 66.75%;
+}
+
+#cantrip_spell_1{ top: 21.5%; }
+#cantrip_spell_2{ top: 23.3%; }
+#cantrip_spell_3{ top: 25.1%; }
+#cantrip_spell_4{ top: 26.85%; }
+#cantrip_spell_5{ top: 28.6%; }
+#cantrip_spell_6{ top: 30.35%; }
+#cantrip_spell_7{ top: 32.1%; }
+#cantrip_spell_8{ top: 33.85%; }
+
+#lvl_1_spell_1{ top: 44.8%; }
+#lvl_1_spell_prepared_1{ top: 45.6%; }
+#lvl_1_spell_2{ top: 46.6%; }
+#lvl_1_spell_prepared_2{ top: 47.4%; }
+#lvl_1_spell_3{ top: 48.35%; }
+#lvl_1_spell_prepared_3{ top: 49.15%; }
+#lvl_1_spell_4{ top: 50.1%; }
+#lvl_1_spell_prepared_4{ top: 50.9%; }
+#lvl_1_spell_5{ top: 51.85%; }
+#lvl_1_spell_prepared_5{ top: 52.65%; }
+#lvl_1_spell_6{ top: 53.6%; }
+#lvl_1_spell_prepared_6{ top: 54.4%; }
+#lvl_1_spell_7{ top: 55.4%; }
+#lvl_1_spell_prepared_7{ top: 56.2%; }
+#lvl_1_spell_8{ top: 57.15%; }
+#lvl_1_spell_prepared_8{ top: 57.95%; }
+#lvl_1_spell_9{ top: 58.9%; }
+#lvl_1_spell_prepared_9{ top: 59.7%; }
+#lvl_1_spell_10{ top: 60.65%; }
+#lvl_1_spell_prepared_10{ top: 61.45%; }
+#lvl_1_spell_11{ top: 62.45%; }
+#lvl_1_spell_prepared_11{ top: 63.25%; }
+#lvl_1_spell_12{ top: 64.2%; }
+#lvl_1_spell_prepared_12{ top: 65%; }
+
+#lvl_2_spell_1{ top: 71.55%; }
+#lvl_2_spell_prepared_1{ top: 72.35%; }
+#lvl_2_spell_2{ top: 73.3%; }
+#lvl_2_spell_prepared_2{ top: 74.1%; }
+#lvl_2_spell_3{ top: 75.05%; }
+#lvl_2_spell_prepared_3{ top: 75.85%; }
+#lvl_2_spell_4{ top: 76.8%; }
+#lvl_2_spell_prepared_4{ top: 77.6%; }
+#lvl_2_spell_5{ top: 78.6%; }
+#lvl_2_spell_prepared_5{ top: 79.4%; }
+#lvl_2_spell_6{ top: 80.35%; }
+#lvl_2_spell_prepared_6{ top: 81.15%; }
+#lvl_2_spell_7{ top: 82.1%; }
+#lvl_2_spell_prepared_7{ top: 82.9%; }
+#lvl_2_spell_8{ top: 83.85%; }
+#lvl_2_spell_prepared_8{ top: 84.65%; }
+#lvl_2_spell_9{ top: 85.65%; }
+#lvl_2_spell_prepared_9{ top: 86.45%; }
+#lvl_2_spell_10{ top: 87.35%; }
+#lvl_2_spell_prepared_10{ top: 88.15%; }
+#lvl_2_spell_11{ top: 89.15%; }
+#lvl_2_spell_prepared_11{ top: 89.95%; }
+#lvl_2_spell_12{ top: 90.95%; }
+#lvl_2_spell_prepared_12{ top: 91.75%; }
+#lvl_2_spell_13{ top: 92.65%; }
+#lvl_2_spell_prepared_13{ top: 93.45%; }
+
+#lvl_3_spell_1{ top: 21.7%; }
+#lvl_3_spell_prepared_1{ top: 22.5%; }
+#lvl_3_spell_2{ top: 23.5%; }
+#lvl_3_spell_prepared_2{ top: 24.3%; }
+#lvl_3_spell_3{ top: 25.25%; }
+#lvl_3_spell_prepared_3{ top: 26.05%; }
+#lvl_3_spell_4{ top: 27%; }
+#lvl_3_spell_prepared_4{ top: 27.8%; }
+#lvl_3_spell_5{ top: 28.75%; }
+#lvl_3_spell_prepared_5{ top: 29.55%; }
+#lvl_3_spell_6{ top: 30.5%; }
+#lvl_3_spell_prepared_6{ top: 31.3%; }
+#lvl_3_spell_7{ top: 32.25%; }
+#lvl_3_spell_prepared_7{ top: 33.05%; }
+#lvl_3_spell_8{ top: 34%; }
+#lvl_3_spell_prepared_8{ top: 34.8%; }
+#lvl_3_spell_9{ top: 35.8%; }
+#lvl_3_spell_prepared_9{ top: 36.6%; }
+#lvl_3_spell_10{ top: 37.55%; }
+#lvl_3_spell_prepared_10{ top: 38.35%; }
+#lvl_3_spell_11{ top: 39.3%; }
+#lvl_3_spell_prepared_11{ top: 40.1%; }
+#lvl_3_spell_12{ top: 41.05%; }
+#lvl_3_spell_prepared_12{ top: 41.95%; }
+#lvl_3_spell_13{ top: 42.85%; }
+#lvl_3_spell_prepared_13{ top: 43.65%; }
+
+#lvl_4_spell_1{ top: 50.05%; }
+#lvl_4_spell_prepared_1{ top: 50.85%; }
+#lvl_4_spell_2{ top: 51.85%; }
+#lvl_4_spell_prepared_2{ top: 52.65%; }
+#lvl_4_spell_3{ top: 53.6%; }
+#lvl_4_spell_prepared_3{ top: 54.4%; }
+#lvl_4_spell_4{ top: 55.35%; }
+#lvl_4_spell_prepared_4{ top: 56.15%; }
+#lvl_4_spell_5{ top: 57.1%; }
+#lvl_4_spell_prepared_5{ top: 57.9%; }
+#lvl_4_spell_6{ top: 58.85%; }
+#lvl_4_spell_prepared_6{ top: 59.65%; }
+#lvl_4_spell_7{ top: 60.65%; }
+#lvl_4_spell_prepared_7{ top: 61.45%; }
+#lvl_4_spell_8{ top: 62.4%; }
+#lvl_4_spell_prepared_8{ top: 63.2%; }
+#lvl_4_spell_9{ top: 64.15%; }
+#lvl_4_spell_prepared_9{ top: 64.95%; }
+#lvl_4_spell_10{ top: 65.9%; }
+#lvl_4_spell_prepared_10{ top: 66.7%; }
+#lvl_4_spell_11{ top: 67.7%; }
+#lvl_4_spell_prepared_11{ top: 68.5%; }
+#lvl_4_spell_12{ top: 69.4%; }
+#lvl_4_spell_prepared_12{ top: 70.2%; }
+#lvl_4_spell_13{ top: 71.2%; }
+#lvl_4_spell_prepared_13{ top: 72%; }
+
+#lvl_5_spell_1{ top: 78.55%; }
+#lvl_5_spell_prepared_1{ top: 79.35%; }
+#lvl_5_spell_2{ top: 80.3%; }
+#lvl_5_spell_prepared_2{ top: 81.1%; }
+#lvl_5_spell_3{ top: 82.1%; }
+#lvl_5_spell_prepared_3{ top: 82.9%; }
+#lvl_5_spell_4{ top: 83.85%; }
+#lvl_5_spell_prepared_4{ top: 84.65%; }
+#lvl_5_spell_5{ top: 85.6%; }
+#lvl_5_spell_prepared_5{ top: 86.4%; }
+#lvl_5_spell_6{ top: 87.35%; }
+#lvl_5_spell_prepared_6{ top: 88.15%; }
+#lvl_5_spell_7{ top: 89.1%; }
+#lvl_5_spell_prepared_7{ top: 89.9%; }
+#lvl_5_spell_8{ top: 90.9%; }
+#lvl_5_spell_prepared_8{ top: 91.7%; }
+#lvl_5_spell_9{ top: 92.65%; }
+#lvl_5_spell_prepared_9{ top: 93.45%; }
+
+#lvl_6_spell_1{ top: 21.7%; }
+#lvl_6_spell_prepared_1{ top: 22.5%; }
+#lvl_6_spell_2{ top: 23.5%; }
+#lvl_6_spell_prepared_2{ top: 24.3%; }
+#lvl_6_spell_3{ top: 25.25%; }
+#lvl_6_spell_prepared_3{ top: 26.05%; }
+#lvl_6_spell_4{ top: 27%; }
+#lvl_6_spell_prepared_4{ top: 27.8%; }
+#lvl_6_spell_5{ top: 28.75%; }
+#lvl_6_spell_prepared_5{ top: 29.55%; }
+#lvl_6_spell_6{ top: 30.5%; }
+#lvl_6_spell_prepared_6{ top: 31.3%; }
+#lvl_6_spell_7{ top: 32.25%; }
+#lvl_6_spell_prepared_7{ top: 33.05%; }
+#lvl_6_spell_8{ top: 34%; }
+#lvl_6_spell_prepared_8{ top: 34.8%; }
+#lvl_6_spell_9{ top: 35.8%; }
+#lvl_6_spell_prepared_9{ top: 36.6%; }
+
+#lvl_7_spell_1{ top: 43%; }
+#lvl_7_spell_prepared_1{ top: 43.8%; }
+#lvl_7_spell_2{ top: 44.8%; }
+#lvl_7_spell_prepared_2{ top: 45.6%; }
+#lvl_7_spell_3{ top: 46.55%; }
+#lvl_7_spell_prepared_3{ top: 47.35%; }
+#lvl_7_spell_4{ top: 48.35%; }
+#lvl_7_spell_prepared_4{ top: 49.15%; }
+#lvl_7_spell_5{ top: 50.05%; }
+#lvl_7_spell_prepared_5{ top: 50.85%; }
+#lvl_7_spell_6{ top: 51.85%; }
+#lvl_7_spell_prepared_6{ top: 52.65%; }
+#lvl_7_spell_7{ top: 53.6%; }
+#lvl_7_spell_prepared_7{ top: 54.4%; }
+#lvl_7_spell_8{ top: 55.35%; }
+#lvl_7_spell_prepared_8{ top: 56.15%; }
+#lvl_7_spell_9{ top: 57.1%; }
+#lvl_7_spell_prepared_9{ top: 57.9%; }
+
+#lvl_8_spell_1{ top: 64.4%; }
+#lvl_8_spell_prepared_1{ top: 65.2%; }
+#lvl_8_spell_2{ top: 66.15%; }
+#lvl_8_spell_prepared_2{ top: 66.95%; }
+#lvl_8_spell_3{ top: 67.9%; }
+#lvl_8_spell_prepared_3{ top: 68.7%; }
+#lvl_8_spell_4{ top: 69.7%; }
+#lvl_8_spell_prepared_4{ top: 70.5%; }
+#lvl_8_spell_5{ top: 71.4%; }
+#lvl_8_spell_prepared_5{ top: 72.2%; }
+#lvl_8_spell_6{ top: 73.2%; }
+#lvl_8_spell_prepared_6{ top: 74%; }
+#lvl_8_spell_7{ top: 74.95%; }
+#lvl_8_spell_prepared_7{ top: 75.75%; }
+
+#lvl_9_spell_1{ top: 82.1%; }
+#lvl_9_spell_prepared_1{ top: 82.9%; }
+#lvl_9_spell_2{ top: 83.85%; }
+#lvl_9_spell_prepared_2{ top: 84.65%; }
+#lvl_9_spell_3{ top: 85.6%; }
+#lvl_9_spell_prepared_3{ top: 86.4%; }
+#lvl_9_spell_4{ top: 87.35%; }
+#lvl_9_spell_prepared_4{ top: 88.15%; }
+#lvl_9_spell_5{ top: 89.1%; }
+#lvl_9_spell_prepared_5{ top: 89.9%; }
+#lvl_9_spell_6{ top: 90.9%; }
+#lvl_9_spell_prepared_6{ top: 91.7%; }
+#lvl_9_spell_7{ top: 92.65%; }
+#lvl_9_spell_prepared_7{ top: 93.45%; }

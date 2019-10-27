@@ -1,0 +1,17 @@
+{
+  "name": "htmlcharactersheet",
+  "version": "1.0.0",
+  "description": "An HTML version of the standard DND5e PDF character sheet.",
+  "scripts": {
+    "start": "node start.js",
+    "build": "node build.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "mkdirp": "^0.5.1",
+    "node-minify": "^3.6.0",
+    "open": "^7.0.0",
+    "rimraf": "^3.0.0"
+  }
+}

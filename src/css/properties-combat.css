@@ -1,0 +1,474 @@
+#name{
+    top: 7.8%;
+    left: 8.5%;
+    width: 27%;
+    height: 2.5%;
+    text-align: center;
+    font-size: 20px;
+}
+#class{
+    top: 5.9%;
+    left: 44.1%;
+    width: 12%;
+    height: 2%;
+}
+#level{
+    top: 5.9%;
+    left: 57%;
+    width: 4%;
+    height: 2%;
+    text-align: center;
+}
+#background{
+    top: 5.9%;
+    left: 62.5%;
+    width: 14%;
+    height: 2%;
+}
+#player{
+    top: 5.9%;
+    left: 78%;
+    width: 14%;
+    height: 2%;
+}
+#race{
+    top: 9.2%;
+    left: 44%;
+    width: 17%;
+    height: 2%;
+}
+#alignment{
+    top: 9.2%;
+    left: 62.5%;
+    width: 14%;
+    height: 2%;
+}
+#xp{
+    top: 9.2%;
+    left: 78%;
+    width: 14%;
+    height: 2%;
+}
+
+.mod{
+    left: 6%;
+    width: 6.7%;
+    height: 3.1%;
+    text-align: center;
+    font-size: 24px;
+}
+.score{
+    left: 7.55%;
+    width: 3.6%;
+    height: 1.9%;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 50%;
+}
+#str_mod{
+    top: 19.7%;
+}
+#str_score{
+    top: 23.35%;
+}
+#dex_mod{
+    top: 28.7%;
+}
+#dex_score{
+    top: 32.35%;
+}
+#con_mod{
+    top: 37.6%;
+}
+#con_score{
+    top: 41.35%;
+}
+#int_mod{
+    top: 46.7%;
+}
+#int_score{
+    top: 50.35%;
+}
+#wis_mod{
+    top: 55.7%;
+}
+#wis_score{
+    top: 59.35%;
+}
+#cha_mod{
+    top: 64.7%;
+}
+#cha_score{
+    top: 68.35%;
+}
+
+#inspiration{
+    top: 16.55%;
+    left: 16.2%;
+    width: 2.7%;
+    height: 2%;
+}
+#proficiency{
+    top: 21.2%;
+    left: 16.1%;
+    width: 3%;
+    height: 2.2%;
+    text-align: center;
+}
+
+.prof{
+    left: 16.5%;
+    width: 1.1%;
+    height: 0.9%;
+}
+.bonus{
+    left: 18.4%;
+    width: 2.4%;
+    height: 1.3%;
+    font-size: 10px;
+}
+#str_save{
+    top: 26.1%;
+}
+#str_save_bonus{
+    top: 25.7%;
+}
+#dex_save{
+    top: 27.8%;
+}
+#dex_save_bonus{
+    top: 27.4%;
+}
+#con_save{
+    top: 29.5%;
+}
+#con_save_bonus{
+    top: 29.1%;
+}
+#int_save{
+    top: 31.2%;
+}
+#int_save_bonus{
+    top: 30.8%;
+}
+#wis_save{
+    top: 32.9%;
+}
+#wis_save_bonus{
+    top: 32.5%;
+}
+#cha_save{
+    top: 34.6%;
+}
+#cha_save_bonus{
+    top: 34.2%;
+}
+
+#acrobatics{
+    top: 40.6%;
+}
+#acrobatics_bonus{
+    top: 40.2%;
+}
+#animal_handling{
+    top: 42.3%;
+}
+#animal_handling_bonus{
+    top: 41.9%;
+}
+#arcana{
+    top: 44%;
+}
+#arcana_bonus{
+    top: 43.6%;
+}
+#athletics{
+    top: 45.7%;
+}
+#athletics_bonus{
+    top: 45.3%;
+}
+#deception{
+    top: 47.4%;
+}
+#deception_bonus{
+    top: 47%;
+}
+#history{
+    top: 49.1%;
+}
+#history_bonus{
+    top: 48.7%;
+}
+#insight{
+    top: 50.8%;
+}
+#insight_bonus{
+    top: 50.4%;
+}
+#intimidation{
+    top: 52.5%;
+}
+#intimidation_bonus{
+    top: 52.1%;
+}
+#investigation{
+    top: 54.2%;
+}
+#investigation_bonus{
+    top: 53.8%;
+}
+#medicine{
+    top: 55.9%;
+}
+#medicine_bonus{
+    top: 55.5%;
+}
+#nature{
+    top: 57.6%;
+}
+#nature_bonus{
+    top: 57.2%;
+}
+#perception{
+    top: 59.3%;
+}
+#perception_bonus{
+    top: 58.9%;
+}
+#performance{
+    top: 61%;
+}
+#performance_bonus{
+    top: 60.6%;
+}
+#persuasion{
+    top: 62.7%;
+}
+#persuasion_bonus{
+    top: 62.3%;
+}
+#religion{
+    top: 64.4%;
+}
+#religion_bonus{
+    top: 64%;
+}
+#sleight_of_hand{
+    top: 66.1%;
+}
+#sleight_of_hand_bonus{
+    top: 65.7%;
+}
+#stealth{
+    top: 67.8%;
+}
+#stealth_bonus{
+    top: 67.4%;
+}
+#survival{
+    top: 69.5%;
+}
+#survival_bonus{
+    top: 69.1%;
+}
+
+#passive_perception{
+    top: 74.3%;
+    left: 5.5%;
+    width: 3%;
+    height: 2.1%;
+    text-align: center;
+}
+#proficiencies{
+    top: 78.6%;
+    left: 5.3%;
+    width: 27.6%;
+    height: 16.5%;
+}
+
+#ac{
+    top: 18%;
+    left: 38.3%;
+    width: 4.2%;
+    height: 2.7%;
+    text-align: center;
+    font-size: 22px;
+}
+#initiative{
+    top: 18%;
+    left: 46.6%;
+    width: 6%;
+    height: 3.5%;
+    text-align: center;
+    font-size: 22px;
+}
+#speed{
+    top: 18%;
+    left: 56.2%;
+    width: 6%;
+    height: 3.5%;
+    line-height: 3.5%;
+    text-align: center;
+    font-size: 22px;
+}
+
+#max_hp{
+    top: 24.7%;
+    left: 47.5%;
+    width: 14.5%;
+    height: 1.3%;
+    font-size: 10px;
+}
+#hp{
+    top: 27%;
+    left: 37.5%;
+    width: 25%;
+    height: 3.5%;
+    line-height: 3.5%;
+    text-align: center;
+    font-size: 24px;
+}
+#temp_hp{
+    top: 33.7%;
+    left: 37.5%;
+    width: 25%;
+    height: 3.5%;
+    line-height: 3.5%;
+    text-align: center;
+    font-size: 24px;
+}
+#total_hit_dice{
+    top: 40%;
+    left: 40.3%;
+    width: 7.5%;
+    height: 1.2%;
+    font-size: 10px;
+}
+#hit_dice{
+    top: 41.6%;
+    left: 37.4%;
+    width: 11.1%;
+    height: 2.9%;
+    line-height: 2.9%;
+    text-align: center;
+    font-size: 20px;
+}
+
+.death_save{
+    width: 1.5%;
+    height: 1.2%;
+}
+#death_save_success_1, #death_save_success_2, #death_save_success_3{
+    top: 40.5%;
+}
+#death_save_failure_1, #death_save_failure_2, #death_save_failure_3{
+    top: 42.4%;
+}
+#death_save_success_1, #death_save_failure_1{
+    left: 56.5%;
+}
+#death_save_success_2, #death_save_failure_2{
+    left: 58.6%;
+}
+#death_save_success_3, #death_save_failure_3{
+    left: 60.7%;
+}
+
+.atk{
+    left: 36.4%;
+    width: 10.5%;
+    height: 2%;
+}
+.atk_bonus{
+    left: 47.6%;
+    width: 5.1%;
+    height: 2%;
+    text-align: center;
+}
+.atk_damage{
+    left: 53.4%;
+    width: 10.2%;
+    height: 2%;
+}
+#attack_1, #attack_1_bonus, #attack_1_damage{
+    top: 49.3%;
+}
+#attack_2, #attack_2_bonus, #attack_2_damage{
+    top: 51.9%;
+}
+#attack_3, #attack_3_bonus, #attack_3_damage{
+    top: 54.5%;
+}
+#attacks{
+    top: 57.1%;
+    left: 36.4%;
+    width: 27.2%;
+    height: 14.4%;
+}
+
+.coins{
+    left: 37.4%;
+    width: 5%;
+    height: 2%;
+    text-align: center;
+    border-radius: 30%;
+    font-size: 14px;
+}
+#cp{
+    top: 75.4%;
+}
+#sp{
+    top: 78.65%;
+}
+#ep{
+    top: 81.9%;
+}
+#gp{
+    top: 85.15%;
+}
+#pp{
+    top: 88.45%;
+}
+#equipment{
+    top: 74.5%;
+    left: 43.6%;
+    width: 20%;
+    height: 20.7%;
+}
+
+#personality_traits{
+    top: 17.4%;
+    left: 68.1%;
+    width: 25.5%;
+    height: 6.2%;
+    font-size: 12px;
+}
+#ideals{
+    top: 26.25%;
+    left: 68.1%;
+    width: 25.5%;
+    height: 4.4%;
+    font-size: 12px;
+}
+#bonds{
+    top: 33.3%;
+    left: 68.1%;
+    width: 25.5%;
+    height: 4.4%;
+    font-size: 12px;
+}
+#flaws{
+    top: 40.2%;
+    left: 68.1%;
+    width: 25.5%;
+    height: 4.4%;
+    font-size: 12px;
+}
+
+#features{
+    top: 48.2%;
+    left: 66.8%;
+    width: 28.1%;
+    height: 47%;
+}

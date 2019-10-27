@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Character</title>
+
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/properties-combat.css">
+        <link rel="stylesheet" href="css/properties-character.css">
+        <link rel="stylesheet" href="css/properties-spells.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.initialize.min.js"></script>
+        <script src="js/general.js"></script>
+        <script src="js/popups.js"></script>
+        <script src="js/components.js"></script>
+        <script src="js/property.js"></script>
+        <script src="js/properties-combat.js"></script>
+        <script src="js/properties-character.js"></script>
+        <script src="js/properties-spells.js"></script>
+    </head>
+    <body>
+        <div class="center">
+            <div class="nav">
+                <div active data-open="combat"><img src="res/icon-combat.svg"></div>
+                <div data-open="character"><img src="res/icon-character.svg"></div>
+                <div data-open="spells"><img src="res/icon-spells.svg"></div>
+            </div>
+            <div class="page" id="combat">
+                <div class="text" id="name"></div>
+                <div class="text" id="class"></div>
+                <div class="text" id="level"></div>
+                <div class="text" id="background"></div>
+                <div class="text" id="player"></div>
+                <div class="text" id="race"></div>
+                <div class="text" id="alignment"></div>
+                <div class="text" id="xp"></div>
+
+                <div class="text mod signed" id="str_mod"></div>
+                <div class="text score" id="str_score"></div>
+                <div class="text mod signed" id="dex_mod"></div>
+                <div class="text score" id="dex_score"></div>
+                <div class="text mod signed" id="con_mod"></div>
+                <div class="text score" id="con_score"></div>
+                <div class="text mod signed" id="int_mod"></div>
+                <div class="text score" id="int_score"></div>
+                <div class="text mod signed" id="wis_mod"></div>
+                <div class="text score" id="wis_score"></div>
+                <div class="text mod signed" id="cha_mod"></div>
+                <div class="text score" id="cha_score"></div>
+
+                <div class="toggle" id="inspiration"></div>
+                <div class="text signed" id="proficiency"></div>
+
+                <div class="toggle prof" id="str_save"></div>
+                <div class="text bonus signed" id="str_save_bonus"></div>
+                <div class="toggle prof" id="dex_save"></div>
+                <div class="text bonus signed" id="dex_save_bonus"></div>
+                <div class="toggle prof" id="con_save"></div>
+                <div class="text bonus signed" id="con_save_bonus"></div>
+                <div class="toggle prof" id="int_save"></div>
+                <div class="text bonus signed" id="int_save_bonus"></div>
+                <div class="toggle prof" id="wis_save"></div>
+                <div class="text bonus signed" id="wis_save_bonus"></div>
+                <div class="toggle prof" id="cha_save"></div>
+                <div class="text bonus signed" id="cha_save_bonus"></div>
+
+                <div class="toggle prof" id="acrobatics"></div>
+                <div class="text bonus signed" id="acrobatics_bonus"></div>
+                <div class="toggle prof" id="animal_handling"></div>
+                <div class="text bonus signed" id="animal_handling_bonus"></div>
+                <div class="toggle prof" id="arcana"></div>
+                <div class="text bonus signed" id="arcana_bonus"></div>
+                <div class="toggle prof" id="athletics"></div>
+                <div class="text bonus signed" id="athletics_bonus"></div>
+                <div class="toggle prof" id="deception"></div>
+                <div class="text bonus signed" id="deception_bonus"></div>
+                <div class="toggle prof" id="history"></div>
+                <div class="text bonus signed" id="history_bonus"></div>
+                <div class="toggle prof" id="insight"></div>
+                <div class="text bonus signed" id="insight_bonus"></div>
+                <div class="toggle prof" id="intimidation"></div>
+                <div class="text bonus signed" id="intimidation_bonus"></div>
+                <div class="toggle prof" id="investigation"></div>
+                <div class="text bonus signed" id="investigation_bonus"></div>
+                <div class="toggle prof" id="medicine"></div>
+                <div class="text bonus signed" id="medicine_bonus"></div>
+                <div class="toggle prof" id="nature"></div>
+                <div class="text bonus signed" id="nature_bonus"></div>
+                <div class="toggle prof" id="perception"></div>
+                <div class="text bonus signed" id="perception_bonus"></div>
+                <div class="toggle prof" id="performance"></div>
+                <div class="text bonus signed" id="performance_bonus"></div>
+                <div class="toggle prof" id="persuasion"></div>
+                <div class="text bonus signed" id="persuasion_bonus"></div>
+                <div class="toggle prof" id="religion"></div>
+                <div class="text bonus signed" id="religion_bonus"></div>
+                <div class="toggle prof" id="sleight_of_hand"></div>
+                <div class="text bonus signed" id="sleight_of_hand_bonus"></div>
+                <div class="toggle prof" id="stealth"></div>
+                <div class="text bonus signed" id="stealth_bonus"></div>
+                <div class="toggle prof" id="survival"></div>
+                <div class="text bonus signed" id="survival_bonus"></div>
+
+                <div class="text" id="passive_perception"></div>
+                <div class="long_text" id="proficiencies" dynamic="true"></div>
+
+                <div class="text" id="ac"></div>
+                <div class="text signed" id="initiative"></div>
+                <div class="text" id="speed"></div>
+
+                <div class="text" id="max_hp"></div>
+                <div class="text" id="hp"></div>
+                <div class="text" id="temp_hp"></div>
+
+                <div class="text" id="total_hit_dice"></div>
+                <div class="text" id="hit_dice"></div>
+
+                <div class="toggle death_save" id="death_save_success_1"></div>
+                <div class="toggle death_save" id="death_save_success_2"></div>
+                <div class="toggle death_save" id="death_save_success_3"></div>
+                <div class="toggle death_save" id="death_save_failure_1"></div>
+                <div class="toggle death_save" id="death_save_failure_2"></div>
+                <div class="toggle death_save" id="death_save_failure_3"></div>
+
+                <div class="text atk" id="attack_1"></div>
+                <div class="text atk_bonus signed" id="attack_1_bonus"></div>
+                <div class="text atk_damage" id="attack_1_damage"></div>
+                <div class="text atk" id="attack_2"></div>
+                <div class="text atk_bonus signed" id="attack_2_bonus"></div>
+                <div class="text atk_damage" id="attack_2_damage"></div>
+                <div class="text atk" id="attack_3"></div>
+                <div class="text atk_bonus signed" id="attack_3_bonus"></div>
+                <div class="text atk_damage" id="attack_3_damage"></div>
+                <div class="long_text" id="attacks" dynamic="true"></div>
+
+                <div class="text coins" id="cp"></div>
+                <div class="text coins" id="sp"></div>
+                <div class="text coins" id="ep"></div>
+                <div class="text coins" id="gp"></div>
+                <div class="text coins" id="pp"></div>
+                <div class="long_text" id="equipment" dynamic="true"></div>
+
+                <div class="long_text" id="personality_traits" dynamic="true"></div>
+                <div class="long_text" id="ideals" dynamic="true"></div>
+                <div class="long_text" id="bonds" dynamic="true"></div>
+                <div class="long_text" id="flaws" dynamic="true"></div>
+
+                <div class="long_text" id="features" dynamic="true"></div>
+
+                <img src="res/page-combat.svg">
+            </div>
+            <div class="page" id="character">
+                <div class="text" id="name-background"></div>
+
+                <div class="text" id="age"></div>
+                <div class="text" id="height"></div>
+                <div class="text" id="weight"></div>
+                <div class="text" id="eyes"></div>
+                <div class="text" id="skin"></div>
+                <div class="text" id="hair"></div>
+
+                <div class="image" id="appearance"></div>
+                <div class="long_text" id="backstory" dynamic="true"></div>
+                <div class="long_text" id="allies" dynamic="true"></div>
+                <div class="text" id="symbol_name"></div>
+                <div class="image" id="symbol"></div>
+                <div class="long_text" id="additional_features" dynamic="true"></div>
+                <div class="long_text" id="treasure" dynamic="true"></div>
+
+                <img src="res/page-character.svg">
+            </div>
+            <div class="page" id="spells">
+                <div class="text" id="spellcasting_class"></div>
+                <div class="text" id="spellcasting_ability"></div>
+                <div class="text" id="spell_save_dc"></div>
+                <div class="text signed" id="spell_attack_bonus"></div>
+
+                <div class="text slots" id="slots_lvl_1"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_1"></div>
+                <div class="text slots" id="slots_lvl_2"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_2"></div>
+                <div class="text slots" id="slots_lvl_3"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_3"></div>
+                <div class="text slots" id="slots_lvl_4"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_4"></div>
+                <div class="text slots" id="slots_lvl_5"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_5"></div>
+                <div class="text slots" id="slots_lvl_6"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_6"></div>
+                <div class="text slots" id="slots_lvl_7"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_7"></div>
+                <div class="text slots" id="slots_lvl_8"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_8"></div>
+                <div class="text slots" id="slots_lvl_9"></div>
+                <div class="text slots_expended" id="slots_expended_lvl_9"></div>
+
+                <div class="text cantrip" id="cantrip_spell_1"></div>
+                <div class="text cantrip" id="cantrip_spell_2"></div>
+                <div class="text cantrip" id="cantrip_spell_3"></div>
+                <div class="text cantrip" id="cantrip_spell_4"></div>
+                <div class="text cantrip" id="cantrip_spell_5"></div>
+                <div class="text cantrip" id="cantrip_spell_6"></div>
+                <div class="text cantrip" id="cantrip_spell_7"></div>
+                <div class="text cantrip" id="cantrip_spell_8"></div>
+
+                <div class="text spell spells_col_1" id="lvl_1_spell_1"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_1"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_2"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_2"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_3"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_3"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_4"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_4"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_5"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_5"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_6"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_6"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_7"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_7"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_8"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_8"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_9"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_9"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_10"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_10"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_11"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_11"></div>
+                <div class="text spell spells_col_1" id="lvl_1_spell_12"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_1_spell_prepared_12"></div>
+
+                <div class="text spell spells_col_1" id="lvl_2_spell_1"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_1"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_2"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_2"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_3"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_3"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_4"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_4"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_5"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_5"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_6"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_6"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_7"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_7"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_8"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_8"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_9"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_9"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_10"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_10"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_11"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_11"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_12"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_12"></div>
+                <div class="text spell spells_col_1" id="lvl_2_spell_13"></div>
+                <div class="toggle spell_prep spells_col_1" id="lvl_2_spell_prepared_13"></div>
+
+                <div class="text spell spells_col_2" id="lvl_3_spell_1"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_1"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_2"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_2"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_3"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_3"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_4"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_4"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_5"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_5"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_6"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_6"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_7"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_7"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_8"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_8"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_9"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_9"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_10"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_10"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_11"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_11"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_12"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_12"></div>
+                <div class="text spell spells_col_2" id="lvl_3_spell_13"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_3_spell_prepared_13"></div>
+
+                <div class="text spell spells_col_2" id="lvl_4_spell_1"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_1"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_2"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_2"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_3"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_3"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_4"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_4"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_5"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_5"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_6"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_6"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_7"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_7"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_8"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_8"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_9"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_9"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_10"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_10"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_11"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_11"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_12"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_12"></div>
+                <div class="text spell spells_col_2" id="lvl_4_spell_13"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_4_spell_prepared_13"></div>
+
+                <div class="text spell spells_col_2" id="lvl_5_spell_1"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_1"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_2"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_2"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_3"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_3"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_4"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_4"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_5"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_5"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_6"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_6"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_7"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_7"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_8"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_8"></div>
+                <div class="text spell spells_col_2" id="lvl_5_spell_9"></div>
+                <div class="toggle spell_prep spells_col_2" id="lvl_5_spell_prepared_9"></div>
+
+                <div class="text spell spells_col_3" id="lvl_6_spell_1"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_1"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_2"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_2"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_3"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_3"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_4"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_4"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_5"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_5"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_6"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_6"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_7"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_7"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_8"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_8"></div>
+                <div class="text spell spells_col_3" id="lvl_6_spell_9"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_6_spell_prepared_9"></div>
+
+                <div class="text spell spells_col_3" id="lvl_7_spell_1"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_1"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_2"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_2"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_3"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_3"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_4"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_4"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_5"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_5"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_6"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_6"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_7"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_7"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_8"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_8"></div>
+                <div class="text spell spells_col_3" id="lvl_7_spell_9"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_7_spell_prepared_9"></div>
+
+                <div class="text spell spells_col_3" id="lvl_8_spell_1"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_1"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_2"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_2"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_3"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_3"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_4"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_4"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_5"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_5"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_6"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_6"></div>
+                <div class="text spell spells_col_3" id="lvl_8_spell_7"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_8_spell_prepared_7"></div>
+
+                <div class="text spell spells_col_3" id="lvl_9_spell_1"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_1"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_2"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_2"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_3"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_3"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_4"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_4"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_5"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_5"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_6"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_6"></div>
+                <div class="text spell spells_col_3" id="lvl_9_spell_7"></div>
+                <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_7"></div>
+
+                <img src="res/page-spells.svg">
+            </div>
+        </div>
+    </body>
+</html>
