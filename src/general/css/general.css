@@ -1,0 +1,45 @@
+html, body{
+    margin: 0;
+    height: 100%;
+    font-family: arial,sans-serif;
+}
+.center{
+    position: relative;
+    width: 700px;
+    height: 100%;
+    margin: auto;
+}
+.nav {
+    position: absolute;
+    left: -50px;
+    top: 20px;
+    width: 50px;
+}
+.nav>div{
+    width: 40px;
+    border: 1px solid #dedfdf;
+    border-right: none;
+    padding: 5px;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+}
+.nav>div *{
+    /* To compute colors: https://codepen.io/sosuke/pen/Pjoqqp */
+    filter: invert(75%) sepia(0%) saturate(1189%) hue-rotate(211deg) brightness(93%) contrast(91%);
+}
+.nav>div:hover *, .nav>div[active] *{
+    filter: none;
+}
+
+.page{
+    border-left: 1px solid #dedfdf;
+    border-right: 1px solid #dedfdf;
+    display: none;
+    position: relative;
+}
+.page>div{
+    position: absolute;
+    box-sizing: border-box;
+}
+
+

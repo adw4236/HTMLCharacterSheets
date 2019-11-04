@@ -1,0 +1,51 @@
+.page .text, .page .long_text{
+    background-color: #e4f2ff;
+    cursor: text;
+    white-space: pre;
+}
+.page .text{
+    overflow: hidden;
+}
+.page .text::before{
+    content: "";
+    display: inline-block;
+    height: 110%;
+    vertical-align: middle;
+}
+.page .long_text{
+    overflow: auto;
+}
+.font_sizing{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    visibility: hidden;
+}
+.page .toggle, .page .image{
+    cursor: pointer;
+}
+.page .toggle svg{
+    display: block;
+}
+.page input, .page textarea{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+    border-radius: inherit;
+    font-family: inherit;
+    text-align: inherit;
+}
+.page textarea{
+    display: block;
+    margin: 0;
+    box-sizing: border-box;
+    resize: none;
+    white-space: pre;
+}
+.page .image img{
+    max-width: 100%;
+    max-height: 100%;
+}

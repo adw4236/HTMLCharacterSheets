@@ -1,0 +1,15 @@
+@media print{
+    .nav{
+        display: none;
+    }
+    .page{
+        display: block !important;
+        border: none;
+    }
+    .center{
+        width: 800px;
+    }
+    .page .text, .page .long_text{
+        background-color: transparent;
+    }
+}
