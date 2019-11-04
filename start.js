@@ -1,3 +1,3 @@
 const open = require("open");
 
-open("src/CharacterSheet.html");
+open("src/DND5e.html");
