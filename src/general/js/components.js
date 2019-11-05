@@ -21,7 +21,6 @@ function FittedText(element){
         }
 
         size.css("font-size", (font + 1) + "px");
-        console.log(size.height(), element.height());
         while(size.width() < element.width() && size.height() < element.height()){
             if(font >= this.maxSize) break;
             font++;
