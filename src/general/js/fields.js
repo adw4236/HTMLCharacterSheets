@@ -283,10 +283,14 @@ function LongTextField(property, element){
         let minFont = property.getMetadata("min-font");
         if(minFont === null && element.attr("min-font")){
             this.setMinFont(element.attr("min-font"));
+        }else if(minFont === null){
+            this.setMinFont(fit.minSize);
         }
         let maxFont = property.getMetadata("max-font");
         if(maxFont === null && element.attr("max-font")){
             this.setMaxFont(element.attr("max-font"));
+        }else if(maxFont === null){
+            this.setMaxFont(fit.maxSize);
         }
     }.bind(this));
 }
