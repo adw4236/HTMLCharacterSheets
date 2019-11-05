@@ -17,50 +17,79 @@ $(function(){
     });
 });
 
-function AutoField(property, element){
+function SignedPrefix(type){
+    type.call(this, ...[].slice.call(arguments, 1));
 
+    let superUpdate = this.update;
+
+    this.update = function(val){
+        if(val >= 0) superUpdate.call(this, "+" + val);
+        else superUpdate.call(this, val);
+    };
+}
+
+function PropertyField(property, element){
     element = $(element);
-    let input = new EditableBlock(element);
-    input.enabled = false;
-    let fit = new FittedText(element);
-    let options = {};
+    this.input = new EditableBlock(element);
+    this.fit = new FittedText(element);
+    this.menu = {};
+    let menu = new ContextMenu(element, this.menu);
+
+    this.init = function(){
+        let val = property.get();
+        if(val !== null){
+            property.update();
+        }else if(element.html()){
+            property.set(element.html());
+        }
+
+        let locked = property.getMetadata("locked");
+        if(locked === "true" || (locked === null && element.attr("locked"))){
+            this.lock();
+        }
+
+        let font = property.getMetadata("font");
+        if(font) element.css("font-size", font + "px");
+    };
+    $(function(){
+        this.init();
+    }.bind(this));
 
     this.update = function(val){
         element.html(val);
-        if(property.overridden){
-            input.enabled = true;
-            element.attr("overridden", "true");
-        }else {
-            input.enabled = false;
-            element.removeAttr("overridden");
-        }
     };
+
     property.addHandler(function(val){
         this.update(val);
     }.bind(this));
 
-    input.onChange(function(value){
+    this.input.onChange(function(value){
         if(!property.set(value)) property.update();
+        property.setMetadata({"font": parseInt(element.css("font-size"))});
     });
 
-    function override(){
-        input.edit();
-        options["Reset"] = reset;
-        options["Override"] = null;
-    }
-    function reset(){
-        property.reset();
-        options["Reset"] = null;
-        options["Override"] = override;
-    }
+    this.lock = function(){
+        element.attr("locked", "true");
+        property.setMetadata({"locked": true});
+        this.input.enabled = false;
+        this.menu["Lock"] = null;
+        this.menu["Unlock"] = this.unlock.bind(this);
+    };
+    this.unlock = function(){
+        element.removeAttr("locked");
+        property.setMetadata({"locked": false});
+        this.input.enabled = true;
+        this.menu["Unlock"] = null;
+        this.menu["Lock"] = this.lock.bind(this);
+    };
+}
 
-    options["Override"] = override;
-    options["Reset"] = null;
-    let menu = new ContextMenu(element, options);
+function AutoField(property, element){
+    PropertyField.call(this, property, element);
+    element = $(element);
+    this.input.enabled = false;
 
-    $(function(){
-        fit.maxSize = parseInt(element.css("font-size"));
-
+    this.init = function(){
         let val = property.get();
         if(val !== null){
             property.update(val);
@@ -68,90 +97,66 @@ function AutoField(property, element){
             property.set(element.html());
         }
 
-        if(property.overridden){
-            options["Override"] = null;
-            options["Reset"] = reset;
-        }
-    });
-}
-
-function TextField(property, element) {
-
-    element = $(element);
-    let input = new EditableBlock(element);
-    let fit = new FittedText(element);
-    let options = {};
-
-    this.update = function(val){
-        element.html(val);
+        let font = property.getMetadata("font");
+        if(font) element.css("font-size", font + "px");
     };
-    property.addHandler(function(val){
-        this.update(val);
-    }.bind(this));
 
-    input.onOpen(function(save, cancel){
+    this.input.onOpen(function(save, cancel){
         element.on("keydown", function(e){
             if(e.key === "Enter") save();
         });
     });
-    input.onClose(function(){
+    this.input.onClose(function(){
         element.off("keydown");
     });
-    input.onChange(function(value){
-        if(!property.set(value)) property.update();
-        this.setFont(parseInt(element.css("font-size")));
-    }.bind(this));
 
-    this.lock = function(){
-        element.attr("locked", "true");
-        property.setMetadata({"locked": true});
-        input.enabled = false;
-        options["Lock"] = null;
-        options["Unlock"] = this.unlock.bind(this);
-    };
-    this.unlock = function(){
-        element.removeAttr("locked");
-        property.setMetadata({"locked": false});
-        input.enabled = true;
-        options["Unlock"] = null;
-        options["Lock"] = this.lock.bind(this);
-    };
-    this.setFont = function(size){
-        element.css("font-size", size + "px");
-        property.setMetadata({"font": size});
-    };
-
-    options["Edit"] = input.edit;
-    options["Lock"] = this.lock.bind(this);
-    options["Unlock"] = null;
-    let menu = new ContextMenu(element, options);
-
-    $(function(){
-        fit.maxSize = parseInt(element.css("font-size"));
-
-        let val = property.get();
-        if(val !== null){
-            property.update();
-        }else if(element.html()){
-            property.set(element.html());
+    let superUpdate = this.update.bind(this);
+    this.update = function(val){
+        superUpdate(val);
+        if(property.overridden){
+            this.input.enabled = true;
+            this.menu["Reset"] = this.reset.bind(this);
+            this.menu["Override"] = null;
+            element.attr("overridden", "true");
+        }else {
+            this.input.enabled = false;
+            element.removeAttr("overridden");
+            this.menu["Reset"] = null;
+            this.menu["Override"] = this.override.bind(this);
         }
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock();
-        }
-        let font = property.getMetadata("font");
-        if(font) element.css("font-size", font + "px");
-    }.bind(this));
+    };
+
+    this.override = function(){
+        this.input.edit();
+    };
+    this.reset = function(){
+        property.reset();
+    };
+}
+
+function TextField(property, element) {
+    PropertyField.call(this, property, element);
+    element = $(element);
+
+    this.input.onOpen(function(save, cancel){
+        element.on("keydown", function(e){
+            if(e.key === "Enter") save();
+        });
+    });
+    this.input.onClose(function(){
+        element.off("keydown");
+    });
+
+    this.menu["Edit"] = this.input.edit.bind(this.input);
+    this.menu["Lock"] = this.lock.bind(this);
+    this.menu["Unlock"] = null;
 }
 
 
 function LongTextField(property, element){
-
+    PropertyField.call(this, property, element);
     element = $(element);
-    let input = new EditableBlock(element);
-    let fit = new FittedText(element);
-    fit.autoFit = false;
-    let options = {};
+    this.fit.autoFit = false;
 
     const DYNAMIC_CHECKED = "<svg viewBox='0 0 448.8 448.8'><path d='M124.95,181.05l-35.7,35.7L204,331.5l255-255l-35.7-35.7L204,260.1L124.95,181.05z M408,408H51V51h255V0H51 C22.95,0,0,22.95,0,51v357c0,28.05,22.95,51,51,51h357c28.05,0,51-22.95,51-51V204h-51V408z'/></svg>Dynamic";
     const DYNAMIC_UNCHECKED = "<svg viewBox='0 0 459 459'><path d='M408,51v357H51V51H408 M408,0H51C22.95,0,0,22.95,0,51v357c0,28.05,22.95,51,51,51h357c28.05,0,51-22.95,51-51V51 C459,22.95,436.05,0,408,0L408,0z'/></svg>Dynamic";
@@ -164,50 +169,45 @@ function LongTextField(property, element){
     const MIN_FONT = "Minimum Font Size <input id='" + MIN_FONT_INPUT + "' type='number' min='1'>";
     const MAX_FONT = "Maximum Font Size <input id='" + MAX_FONT_INPUT + "' type='number' min='1'>";
 
-    this.update = function(val){
-        if(val) val = val.replace(/(?:\r\n|\r|\n)/g, '<br>');
-        element.html(val);
-    };
-    property.addHandler(function(val){
-        this.update(val);
-    }.bind(this));
+    let superInit = this.init.bind(this);
+    this.init = function(){
+        superInit();
 
-    input.onChange(function(value){
-        if(!property.set(value)) property.update();
-        this.setFont(parseInt(element.css("font-size")));
-    }.bind(this));
+        let dynamic = property.getMetadata("dynamic");
+        if(dynamic === "true" || (dynamic === null && element.attr("dynamic"))){
+            this.setDynamic();
+        }
+        let minFont = property.getMetadata("min-font");
+        if(minFont === null && element.attr("min-font")){
+            this.setMinFont(element.attr("min-font"));
+        }else if(minFont === null){
+            this.setMinFont(this.fit.minSize);
+        }
+        let maxFont = property.getMetadata("max-font");
+        if(maxFont === null && element.attr("max-font")){
+            this.setMaxFont(element.attr("max-font"));
+        }else if(maxFont === null){
+            this.setMaxFont(this.fit.maxSize);
+        }
+    };
 
-    this.lock = function(){
-        element.attr("locked", "true");
-        property.setMetadata({"locked": true});
-        input.enabled = false;
-        options["Lock"] = null;
-        options["Unlock"] = this.unlock.bind(this);
-    };
-    this.unlock = function(){
-        element.removeAttr("locked");
-        property.setMetadata({"locked": false});
-        input.enabled = true;
-        options["Unlock"] = null;
-        options["Lock"] = this.lock.bind(this);
-    };
     this.setDynamic = function(){
         element.attr("dynamic", "true");
         property.setMetadata({"dynamic": true});
-        fit.autoFit = true;
-        options["Font"][DYNAMIC_CHECKED] = this.setNondynamic.bind(this);
-        options["Font"][DYNAMIC_UNCHECKED] = null;
-        options["Font"][MIN_FONT] = function(){return false;};
-        options["Font"][MAX_FONT] = function(){return false;};
+        this.fit.autoFit = true;
+        this.menu["Font"][DYNAMIC_CHECKED] = this.setNondynamic.bind(this);
+        this.menu["Font"][DYNAMIC_UNCHECKED] = null;
+        this.menu["Font"][MIN_FONT] = function(){return false;};
+        this.menu["Font"][MAX_FONT] = function(){return false;};
     };
     this.setNondynamic = function(){
         element.removeAttr("dynamic");
         property.setMetadata({"dynamic": false});
-        fit.autoFit = false;
-        options["Font"][DYNAMIC_CHECKED] = null;
-        options["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
-        options["Font"][MIN_FONT] = null;
-        options["Font"][MAX_FONT] = null;
+        this.fit.autoFit = false;
+        this.menu["Font"][DYNAMIC_CHECKED] = null;
+        this.menu["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
+        this.menu["Font"][MIN_FONT] = null;
+        this.menu["Font"][MAX_FONT] = null;
     };
     this.setFont = function(size){
         element.css("font-size", size + "px");
@@ -216,32 +216,24 @@ function LongTextField(property, element){
     this.setMinFont = function(size){
         element.attr("min-font", size);
         property.setMetadata({"min-font": size});
-        fit.minSize = size;
+        this.fit.minSize = size;
     };
     this.setMaxFont = function(size){
         element.attr("max-font", size);
         property.setMetadata({"max-font": size});
-        fit.maxSize = size;
+        this.fit.maxSize = size;
     };
 
-    options["Edit"] = input.edit;
-    options["Lock"] = this.lock.bind(this);
-    options["Unlock"] = null;
-    options["Font"] = {};
-    options["Font"][DYNAMIC_CHECKED] = null;
-    options["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
-    options["Font"][FONT] = function(){return false};
-    options["Font"][MIN_FONT] = null;
-    options["Font"][MAX_FONT] = null;
-    let menu = new ContextMenu(element, options);
+    this.menu["Edit"] = this.input.edit.bind(this.input);
+    this.menu["Lock"] = this.lock.bind(this);
+    this.menu["Unlock"] = null;
+    this.menu["Font"] = {};
+    this.menu["Font"][DYNAMIC_CHECKED] = null;
+    this.menu["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
+    this.menu["Font"][FONT] = function(){return false};
+    this.menu["Font"][MIN_FONT] = null;
+    this.menu["Font"][MAX_FONT] = null;
 
-    //Prevent flash of highlight on double click without preventing highlight altogether.
-    element.on("mousedown", function(e){
-        if(e.detail > 1){
-            e.preventDefault();
-        }
-    });
-    element.on("dblclick", this.edit);
     $("body").on("input", "#" + FONT_INPUT, function(){
         this.setFont($("#" + FONT_INPUT).val());
     }.bind(this));
@@ -261,101 +253,14 @@ function LongTextField(property, element){
     $.initialize("#" + MAX_FONT_INPUT, function(){
         $("#" + MAX_FONT_INPUT).val(parseInt(property.getMetadata("max-font")));
     });
-
-    $(function(){
-        let val = property.get();
-        if(val !== null){
-            property.update();
-        }else if(element.html()){
-            val = element.html().replace(/<br\s*[\/]?>/g, "\n");
-            property.set(val);
-        }
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock();
-        }
-        let dynamic = property.getMetadata("dynamic");
-        if(dynamic === "true" || (dynamic === null && element.attr("dynamic"))){
-            this.setDynamic();
-        }
-        let font = property.getMetadata("font");
-        if(font) element.css("font-size", font + "px");
-        let minFont = property.getMetadata("min-font");
-        if(minFont === null && element.attr("min-font")){
-            this.setMinFont(element.attr("min-font"));
-        }else if(minFont === null){
-            this.setMinFont(fit.minSize);
-        }
-        let maxFont = property.getMetadata("max-font");
-        if(maxFont === null && element.attr("max-font")){
-            this.setMaxFont(element.attr("max-font"));
-        }else if(maxFont === null){
-            this.setMaxFont(fit.maxSize);
-        }
-    }.bind(this));
-}
-
-function SignedPrefix(type){
-    type.call(this, ...[].slice.call(arguments, 1));
-
-    let superUpdate = this.update;
-
-    this.update = function(val){
-        if(val >= 0) superUpdate.call(this, "+" + val);
-        else superUpdate.call(this, val);
-    };
 }
 
 function ToggleField(property, element){
-
+    PropertyField.call(this, property, element);
     element = $(element);
-    let options = {};
+    this.input.enabled = false;
 
-    this.update = function(val){
-        element.attr("cycle", val);
-        if(val === 0)
-            element.html("");
-        if(val === 1)
-            element.html("<svg style='display: block; width: 100%; height: 100%'><circle cx='50%' cy='50%' r='50%' fill='black'/></svg>");
-        if(val === 2)
-            element.html("<svg style='display: block; width: 100%; height: 100%'><circle cx='50%' cy='50%' r='50%' fill='red'/></svg>");
-    };
-    property.addHandler(function(val){
-        this.update(val);
-    }.bind(this));
-
-    this.edit = function(){
-        property.toggle();
-    };
-
-    this.lock = function(){
-        element.attr("locked", "true");
-        property.setMetadata({"locked": true});
-        element.off("click", this.edit);
-        options["Lock"] = null;
-        options["Unlock"] = this.unlock.bind(this);
-    };
-    this.unlock = function(){
-        element.removeAttr("locked");
-        property.setMetadata({"locked": false});
-        element.on("click", this.edit);
-        options["Unlock"] = null;
-        options["Lock"] = this.lock.bind(this);
-    };
-
-    options["Lock"] = this.lock.bind(this);
-    options["Unlock"] = null;
-    let menu = new ContextMenu(element, options);
-
-    //Prevent flash of highlight on double click without preventing highlight altogether.
-    element.on("mousedown", function(e){
-        if(e.detail > 1){
-            e.preventDefault();
-        }
-    });
-    element.on("click", this.edit);
-
-    $(function(){
+    this.init = function(){
         let val = property.get();
         if(val){
             property.update();
@@ -366,30 +271,62 @@ function ToggleField(property, element){
         if(locked === "true" || (locked === null && element.attr("locked"))){
             this.lock();
         }
-    }.bind(this));
+    };
+
+    this.update = function(val){
+        element.attr("cycle", val);
+        if(val === 0)
+            element.html("");
+        if(val === 1)
+            element.html("<svg style='display: block; width: 100%; height: 100%'><circle cx='50%' cy='50%' r='50%' fill='black'/></svg>");
+        if(val === 2)
+            element.html("<svg style='display: block; width: 100%; height: 100%'><circle cx='50%' cy='50%' r='50%' fill='red'/></svg>");
+    };
+
+    function toggle(){
+        property.toggle();
+    }
+
+    this.lock = function(){
+        element.attr("locked", "true");
+        property.setMetadata({"locked": true});
+        element.off("click", toggle);
+        this.menu["Lock"] = null;
+        this.menu["Unlock"] = this.unlock.bind(this);
+    };
+    this.unlock = function(){
+        element.removeAttr("locked");
+        property.setMetadata({"locked": false});
+        element.on("click", toggle);
+        this.menu["Unlock"] = null;
+        this.menu["Lock"] = this.lock.bind(this);
+    };
+
+    this.menu["Lock"] = this.lock.bind(this);
+    this.menu["Unlock"] = null;
+
+    element.on("click", toggle);
 }
 
 function ImageField(property, element){
+    PropertyField.call(this, property, element);
     element = $(element);
+    this.input.enabled = false;
 
-    this.update = function(val){
-        element.html("");
-        let img = $("<img src='" + val + "'>");
-        element.append(img);
-    };
-
-    property.addHandler(function(val){
-        this.update(val);
-    }.bind(this));
-
-    $(function(){
+    this.init = function(){
         let val = property.get();
         if(val){
             property.update();
         }else if(element.find("img").length > 0){
             property.set(element.find("img").attr("src"));
         }
-    });
+    };
+
+    this.update = function(val){
+        element.html("");
+        let img = $("<img src='" + val + "'>");
+        element.append(img);
+    };
 
     let fileInput = $("<input type='file' accept='image/*'>");
     fileInput.on("change", function(){
