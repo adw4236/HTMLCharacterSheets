@@ -3,7 +3,7 @@
     left: 8.5%;
     width: 27%;
     height: 2.4%;
-    text-align: center;
+    justify-content: center;
     font-size: 20px;
 }
 #spellcasting_ability{
@@ -11,7 +11,7 @@
     left: 47%;
     width: 9.4%;
     height: 3.6%;
-    text-align: center;
+    justify-content: center;
     font-size: 24px;
 }
 #spell_save_dc{
@@ -19,7 +19,7 @@
     left: 63.4%;
     width: 9.4%;
     height: 3.6%;
-    text-align: center;
+    justify-content: center;
     font-size: 24px;
 }
 #spell_attack_bonus{
@@ -27,20 +27,20 @@
     left: 80.3%;
     width: 9.4%;
     height: 3.6%;
-    text-align: center;
+    justify-content: center;
     font-size: 24px;
 }
 
 .slots{
     width: 6.6%;
     height: 2.5%;
-    text-align: center;
+    justify-content: center;
     font-size: 18px;
 }
 .slots_expended{
     width: 15.4%;
     height: 2.3%;
-    text-align: center;
+    justify-content: center;
     font-size: 16px;
 }
 #slots_lvl_1{ top: 39.5%; left: 8.3%; }
