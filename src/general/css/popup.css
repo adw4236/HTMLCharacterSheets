@@ -10,36 +10,41 @@
     padding: 4px 0;
     margin: 0;
     list-style-type: none;
-    font-size: 14px;
+    font-size: 12px;
     min-width: 100px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .context_menu li{
-    padding: 2px 20px;
+    padding: 4px 0;
     cursor: default;
 }
-.context_menu li:hover{
+.context_menu li.disabled{
+    color: lightgray;
+}
+.context_menu li.separator{
+    color: #bababa;
+    border-bottom: thin solid lightgray;
+    padding: 4px 10px;
+    margin-bottom: 5px;
+}
+.context_menu li:hover:not(.disabled){
     background-color: #e3e3e3;
 }
-.context_menu li .sub_arrow{
-    float: right;
-    margin-left: 10px;
+.context_menu li>*, .context_menu li .right_content>*{
+    display: inline-block;
 }
-.context_menu svg{
+.context_menu li .item_icon, .context_menu li .item_action{
+    width: 20px;
+    margin: 0 2px;
+}
+.context_menu li .right_content{
+    float: right;
+}
+.context_menu li .item_icon svg, .context_menu li .item_action svg{
+    display: block;
+    margin: 1px auto;
     height: 12px;
-    margin-right: 10px;
-}
-.context_menu .sub_arrow svg{
-    height: 8px;
-}
-.context_menu hr{
-    margin: 4px 2px;
-    border: 1px solid lightgray;
-    border-bottom: none;
-}
-.context_menu input{
-    float: right;
-    font-size: 12px;
-    width: 50px;
-    padding: 0;
-    margin-left: 10px;
 }

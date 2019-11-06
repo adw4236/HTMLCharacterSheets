@@ -42,4 +42,11 @@ html, body{
     box-sizing: border-box;
 }
 
+input.font_sizing{
+    float: right;
+    font-size: 12px;
+    width: 50px;
+    padding: 0;
+    margin-left: 10px;
+}
 

@@ -32,9 +32,17 @@ function PropertyField(property, element){
     element = $(element);
     this.input = new EditableBlock(element);
     this.fit = new FittedText(element);
-    this.menu = {};
+    this.menu = [];
     let menu = new ContextMenu(element, this.menu);
 
+    let lock = new ContextMenu.Toggle("Lock", function(locked){
+        this.lock(locked);
+    }.bind(this));
+    lock.checkedContent = "Unlock";
+    lock.checkedActionIcon = "<svg viewBox='0 0 535.5 535.5'><path d='M267.75,408c28.05,0,51-22.95,51-51s-22.95-51-51-51s-51,22.95-51,51S239.7,408,267.75,408z M420.75,178.5h-25.5v-51c0-71.4-56.1-127.5-127.5-127.5c-71.4,0-127.5,56.1-127.5,127.5h48.45c0-43.35,35.7-79.05,79.05-79.05c43.35,0,79.05,35.7,79.05,79.05v51H114.75c-28.05,0-51,22.95-51,51v255c0,28.05,22.95,51,51,51h306c28.05,0,51-22.95,51-51v-255C471.75,201.45,448.8,178.5,420.75,178.5z M420.75,484.5h-306v-255h306V484.5z'/></svg>";
+    lock.uncheckedActionIcon = "<svg viewBox='0 0 535.5 535.5'><path d='M420.75,178.5h-25.5v-51c0-71.4-56.1-127.5-127.5-127.5c-71.4,0-127.5,56.1-127.5,127.5v51h-25.5c-28.05,0-51,22.95-51,51v255c0,28.05,22.95,51,51,51h306c28.05,0,51-22.95,51-51v-255C471.75,201.45,448.8,178.5,420.75,178.5z M267.75,48.45c43.35,0,79.05,35.7,79.05,79.05v51H191.25v-51h-2.55C188.7,84.15,224.4,48.45,267.75,48.45z M420.75,484.5h-306v-255h306V484.5z M267.75,408c28.05,0,51-22.95,51-51s-22.95-51-51-51s-51,22.95-51,51S239.7,408,267.75,408z'/></svg>";
+    lock.refreshIcons();
+    this.menu.push(lock);
     this.init = function(){
         let val = property.get();
         if(val !== null){
@@ -45,7 +53,8 @@ function PropertyField(property, element){
 
         let locked = property.getMetadata("locked");
         if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock();
+            this.lock(true);
+            lock.toggle(true);
         }
 
         let font = property.getMetadata("font");
@@ -68,19 +77,11 @@ function PropertyField(property, element){
         property.setMetadata({"font": parseInt(element.css("font-size"))});
     });
 
-    this.lock = function(){
-        element.attr("locked", "true");
-        property.setMetadata({"locked": true});
-        this.input.enabled = false;
-        this.menu["Lock"] = null;
-        this.menu["Unlock"] = this.unlock.bind(this);
-    };
-    this.unlock = function(){
-        element.removeAttr("locked");
-        property.setMetadata({"locked": false});
-        this.input.enabled = true;
-        this.menu["Unlock"] = null;
-        this.menu["Lock"] = this.lock.bind(this);
+    this.lock = function(locked){
+        if(locked) element.attr("locked", "true");
+        else element.removeAttr("locked");
+        property.setMetadata({"locked": locked});
+        this.input.enabled = !locked;
     };
 }
 
@@ -88,6 +89,15 @@ function AutoField(property, element){
     PropertyField.call(this, property, element);
     element = $(element);
     this.input.enabled = false;
+
+    let lock = this.menu[0];
+    let override = new ContextMenu.Option("Override", function(){
+        this.override();
+    }.bind(this));
+    let reset = new ContextMenu.Option("Reset", function(){
+        this.reset();
+    }.bind(this));
+    this.menu.unshift(override, reset);
 
     this.init = function(){
         let val = property.get();
@@ -115,14 +125,16 @@ function AutoField(property, element){
         superUpdate(val);
         if(property.overridden){
             this.input.enabled = true;
-            this.menu["Reset"] = this.reset.bind(this);
-            this.menu["Override"] = null;
+            override.disabled = true;
+            reset.disabled = false;
+            lock.disabled = false;
             element.attr("overridden", "true");
-        }else {
+        }else{
             this.input.enabled = false;
+            override.disabled = false;
+            reset.disabled = true;
+            lock.disabled = true;
             element.removeAttr("overridden");
-            this.menu["Reset"] = null;
-            this.menu["Override"] = this.override.bind(this);
         }
     };
 
@@ -138,6 +150,8 @@ function TextField(property, element) {
     PropertyField.call(this, property, element);
     element = $(element);
 
+    this.menu.unshift(new ContextMenu.Option("Edit", this.input.edit.bind(this.input)));
+
     this.input.onOpen(function(save, cancel){
         element.on("keydown", function(e){
             if(e.key === "Enter") save();
@@ -146,10 +160,6 @@ function TextField(property, element) {
     this.input.onClose(function(){
         element.off("keydown");
     });
-
-    this.menu["Edit"] = this.input.edit.bind(this.input);
-    this.menu["Lock"] = this.lock.bind(this);
-    this.menu["Unlock"] = null;
 }
 
 
@@ -158,107 +168,102 @@ function LongTextField(property, element){
     element = $(element);
     this.fit.autoFit = false;
 
-    const DYNAMIC_CHECKED = "<svg viewBox='0 0 448.8 448.8'><path d='M124.95,181.05l-35.7,35.7L204,331.5l255-255l-35.7-35.7L204,260.1L124.95,181.05z M408,408H51V51h255V0H51 C22.95,0,0,22.95,0,51v357c0,28.05,22.95,51,51,51h357c28.05,0,51-22.95,51-51V204h-51V408z'/></svg>Dynamic";
-    const DYNAMIC_UNCHECKED = "<svg viewBox='0 0 459 459'><path d='M408,51v357H51V51H408 M408,0H51C22.95,0,0,22.95,0,51v357c0,28.05,22.95,51,51,51h357c28.05,0,51-22.95,51-51V51 C459,22.95,436.05,0,408,0L408,0z'/></svg>Dynamic";
+    this.menu.unshift(new ContextMenu.Option("Edit", this.input.edit.bind(this.input)));
+
+    let dynamicFont = new ContextMenu.Toggle("Dynamic", function(dynamic){
+        this.setDynamic(dynamic);
+    }.bind(this));
 
     const FONT_INPUT = element.attr("id") +"_FONT";
     const MIN_FONT_INPUT = element.attr("id") +"_MIN_FONT";
     const MAX_FONT_INPUT = element.attr("id") +"_MAX_FONT";
 
-    const FONT = "Font Size <input id='" + FONT_INPUT + "' type='number' min='1'>";
-    const MIN_FONT = "Minimum Font Size <input id='" + MIN_FONT_INPUT + "' type='number' min='1'>";
-    const MAX_FONT = "Maximum Font Size <input id='" + MAX_FONT_INPUT + "' type='number' min='1'>";
+    let fontSizeInput = $("<input id='" + FONT_INPUT + "' class='font_sizing' type='number'>");
+    let minFontInput = $("<input id='" + MIN_FONT_INPUT + "' class='font_sizing' type='number'>");
+    let maxFontInput = $("<input id='" + MAX_FONT_INPUT + "' class='font_sizing' type='number'>");
+
+    let fontSize = new ContextMenu.Option("Font Size");
+    fontSize.rightContent = fontSizeInput;
+    let minFont = new ContextMenu.Option("Min Font");
+    minFont.rightContent = minFontInput;
+    let maxFont = new ContextMenu.Option("Max Font");
+    maxFont.rightContent = maxFontInput;
+    minFont.disabled = true;
+    maxFont.disabled = true;
+
+    this.menu.push(new ContextMenu.Sub("Font", [dynamicFont, fontSize, minFont, maxFont]));
 
     let superInit = this.init.bind(this);
     this.init = function(){
         superInit();
 
+        fontSizeInput.val(parseInt(element.css("font-size")));
+
         let dynamic = property.getMetadata("dynamic");
         if(dynamic === "true" || (dynamic === null && element.attr("dynamic"))){
-            this.setDynamic();
+            this.setDynamic(true);
+            dynamicFont.toggle(true);
         }
         let minFont = property.getMetadata("min-font");
         if(minFont === null && element.attr("min-font")){
-            this.setMinFont(element.attr("min-font"));
+            minFont = parseInt(element.attr("min-font"));
         }else if(minFont === null){
-            this.setMinFont(this.fit.minSize);
+            minFont = this.fit.minSize;
         }
+        this.setMinFont(minFont);
+
         let maxFont = property.getMetadata("max-font");
         if(maxFont === null && element.attr("max-font")){
-            this.setMaxFont(element.attr("max-font"));
+            maxFont = parseInt(element.attr("max-font"));
         }else if(maxFont === null){
-            this.setMaxFont(this.fit.maxSize);
+            maxFont = this.fit.maxSize;
         }
+        this.setMaxFont(maxFont);
     };
 
-    this.setDynamic = function(){
-        element.attr("dynamic", "true");
-        property.setMetadata({"dynamic": true});
-        this.fit.autoFit = true;
-        this.menu["Font"][DYNAMIC_CHECKED] = this.setNondynamic.bind(this);
-        this.menu["Font"][DYNAMIC_UNCHECKED] = null;
-        this.menu["Font"][MIN_FONT] = function(){return false;};
-        this.menu["Font"][MAX_FONT] = function(){return false;};
-    };
-    this.setNondynamic = function(){
-        element.removeAttr("dynamic");
-        property.setMetadata({"dynamic": false});
-        this.fit.autoFit = false;
-        this.menu["Font"][DYNAMIC_CHECKED] = null;
-        this.menu["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
-        this.menu["Font"][MIN_FONT] = null;
-        this.menu["Font"][MAX_FONT] = null;
+    this.setDynamic = function(dynamic){
+        if(dynamic) element.attr("dynamic", "true");
+        else element.removeAttr("dynamic");
+        property.setMetadata({"dynamic": dynamic});
+        this.fit.autoFit = dynamic;
+        minFont.disabled = !dynamic;
+        maxFont.disabled = !dynamic;
     };
     this.setFont = function(size){
         element.css("font-size", size + "px");
         property.setMetadata({"font": size});
+        fontSizeInput.val(size);
     };
     this.setMinFont = function(size){
         element.attr("min-font", size);
         property.setMetadata({"min-font": size});
         this.fit.minSize = size;
+        minFontInput.val(size);
     };
     this.setMaxFont = function(size){
         element.attr("max-font", size);
         property.setMetadata({"max-font": size});
         this.fit.maxSize = size;
+        maxFontInput.val(size);
     };
 
-    this.menu["Edit"] = this.input.edit.bind(this.input);
-    this.menu["Lock"] = this.lock.bind(this);
-    this.menu["Unlock"] = null;
-    this.menu["Font"] = {};
-    this.menu["Font"][DYNAMIC_CHECKED] = null;
-    this.menu["Font"][DYNAMIC_UNCHECKED] = this.setDynamic.bind(this);
-    this.menu["Font"][FONT] = function(){return false};
-    this.menu["Font"][MIN_FONT] = null;
-    this.menu["Font"][MAX_FONT] = null;
-
     $("body").on("input", "#" + FONT_INPUT, function(){
-        this.setFont($("#" + FONT_INPUT).val());
+        this.setFont(parseInt(fontSizeInput.val()));
     }.bind(this));
     $("body").on("input", "#" + MIN_FONT_INPUT, function(){
-        this.setMinFont($("#" + MIN_FONT_INPUT).val());
+        this.setMinFont(parseInt(minFontInput.val()));
     }.bind(this));
     $("body").on("input", "#" + MAX_FONT_INPUT, function(){
-        this.setMaxFont($("#" + MAX_FONT_INPUT).val());
+        this.setMaxFont(parseInt(maxFontInput.val()));
     }.bind(this));
-
-    $.initialize("#" + FONT_INPUT, function(){
-        $("#" + FONT_INPUT).val(parseInt(element.css("font-size")));
-    });
-    $.initialize("#" + MIN_FONT_INPUT, function(){
-        $("#" + MIN_FONT_INPUT).val(parseInt(property.getMetadata("min-font")));
-    });
-    $.initialize("#" + MAX_FONT_INPUT, function(){
-        $("#" + MAX_FONT_INPUT).val(parseInt(property.getMetadata("max-font")));
-    });
 }
 
 function ToggleField(property, element){
     PropertyField.call(this, property, element);
     element = $(element);
     this.input.enabled = false;
+
+    let lock = this.menu[0];
 
     this.init = function(){
         let val = property.get();
@@ -269,7 +274,8 @@ function ToggleField(property, element){
         }
         let locked = property.getMetadata("locked");
         if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock();
+            this.lock(true);
+            lock.toggle(true);
         }
     };
 
@@ -287,23 +293,13 @@ function ToggleField(property, element){
         property.toggle();
     }
 
-    this.lock = function(){
-        element.attr("locked", "true");
-        property.setMetadata({"locked": true});
-        element.off("click", toggle);
-        this.menu["Lock"] = null;
-        this.menu["Unlock"] = this.unlock.bind(this);
+    let superLock = this.lock.bind(this);
+    this.lock = function(locked){
+        superLock(locked);
+        this.input.enabled = false;
+        if(locked) element.off("click", toggle);
+        else element.on("click", toggle);
     };
-    this.unlock = function(){
-        element.removeAttr("locked");
-        property.setMetadata({"locked": false});
-        element.on("click", toggle);
-        this.menu["Unlock"] = null;
-        this.menu["Lock"] = this.lock.bind(this);
-    };
-
-    this.menu["Lock"] = this.lock.bind(this);
-    this.menu["Unlock"] = null;
 
     element.on("click", toggle);
 }
@@ -313,12 +309,19 @@ function ImageField(property, element){
     element = $(element);
     this.input.enabled = false;
 
+    let lock = this.menu[0];
+
     this.init = function(){
         let val = property.get();
         if(val){
             property.update();
         }else if(element.find("img").length > 0){
             property.set(element.find("img").attr("src"));
+        }
+        let locked = property.getMetadata("locked");
+        if(locked === "true" || (locked === null && element.attr("locked"))){
+            this.lock(true);
+            lock.toggle(true);
         }
     };
 
@@ -333,13 +336,18 @@ function ImageField(property, element){
         let file = fileInput.prop("files")[0];
         if(file) property.setFile(file);
     });
-    //Prevent flash of highlight on double click without preventing highlight altogether.
-    element.on("mousedown", function(e){
-        if(e.detail > 1){
-            e.preventDefault();
-        }
-    });
-    element.on("dblclick", function(){
+
+    function selectFile(){
         fileInput.click();
-    });
+    }
+
+    let superLock = this.lock.bind(this);
+    this.lock = function(locked){
+        superLock(locked);
+        this.input.enabled = false;
+        if(locked) element.off("dblclick", selectFile);
+        else element.on("dblclick", selectFile);
+    };
+
+    element.on("dblclick", selectFile);
 }
