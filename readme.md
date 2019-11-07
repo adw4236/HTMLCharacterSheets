@@ -1,7 +1,7 @@
 # HTML Character Sheets
 
-This is a collection of D&D Character sheets converted to html for ease of use and added features that would not
-be present in the PDFs.
+This is a collection of tabletop character sheets converted to html for ease of use and added features that
+would not be present in PDFs.
 
 ## Usage
 
@@ -31,6 +31,39 @@ it to before, reload the page and it should all come back. Just remember to ctrl
 
 ### Printing
 
-I know a lot of people prefer pen and paper but like to have permanent information neatly typed out. You can
+A lot of people prefer pen and paper but like to have permanent information neatly typed out. You can
 easily print out the character sheet using ctrl+p, however I would recommend opening the more settings
 option in chrome and changing margins to none for the best print quality.
+
+
+## Building
+
+Make sure to run `npm install` after a pull request to ensure your dependencies are up to date.
+
+To create a single minified HTML file from the source, run the following command:
+
+`node build.js [file1 [file2...]]`
+
+or
+
+`npm run build [file1 [file2...]]`
+
+If no arguments are provided, this will build all of the HTML file in the top level of the src directory.
+All resources referenced in the html will be pulled, minified, and injected into the HTML before the HTML
+file itself is minified.  The ".html" extension is optional when running this script.
+
+Currently, the following file types are supported in the build process as includes in the HTML:
+- CSS
+- JS
+- SVG
+
+### Running
+
+Opening the HTML file that you are working in a browser on is all you need to do to run the project,
+however there is a start.js script provided to allow for ease of use (e.g. run configurations).
+
+`node start.js [file1 [file2...]]`
+
+or
+
+`npm run start [file1 [file2...]]`
