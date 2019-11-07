@@ -31,7 +31,11 @@ $(function(){
         }else{
             inputs[id] = new property.fieldType(property, this);
         }
+        inputs[id].init();
     });
+    for(let property in Character){
+        Character[property].update();
+    }
 });
 
 /**
@@ -101,29 +105,49 @@ function PropertyField(property, element){
      * time.
      */
     this.init = function(){
-        // Update the actual value of the property if it is stored or set the property if it needs to be.
-        let val = property.get();
-        if(val !== null){
-            property.update();
-        }else if(element.html()){
+        //If no data is in the property, update it with the persistent data.
+        if(property.get() === null && element.html()){
             property.set(element.html());
         }
 
-        // Update the locked state if it is stored in metadata or if it is set on the element.
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock(true);
-            lock.toggle(true);
-        }
-
-        // Update the font size if it is stored in metadata
-        let font = property.getMetadata("font");
-        if(font) element.css("font-size", font + "px");
+        // Set any metadata that should be synced
+        this.lock(this.getMetadata("locked") === "true");
+        lock.toggle(this.getMetadata("locked") === "true");
+        this.setFontSize(this.getMetadata("font-size"));
     };
-    // The init method is called once all of the elements have been loaded in.
-    $(function(){
-        this.init();
-    }.bind(this));
+
+    /**
+     * Sets the metadata on this field for persistent storage and on the property associated for local storage.
+     *
+     * @param key - The key of the metadata to store
+     * @param value - The value of the metadata to store
+     */
+    this.setMetadata = function(key, value){
+        // Save to property
+        let metadata = {};
+        metadata[key] = value;
+        property.setMetadata(metadata);
+        // Save to element
+        if(value) element.attr("metadata-" + key, value);
+        else element.removeAttr("metadata-" + key);
+    };
+    /**
+     * Gets the metadata for this field by first trying to get it from the property, and second trying to receive
+     * it from the element.  If both fail, null is returned.
+     *
+     * @param key - The key of the metadata to receive.
+     * @returns The metadata stored or null if it never was.
+     */
+    this.getMetadata = function(key){
+        // Try receiving from property
+        let value = property.getMetadata(key);
+        if(value) return value;
+        // Try receiving from element
+        value = element.attr("metadata-" + key);
+        if(value) return value;
+        // Metadata not found
+        return null;
+    };
 
     /**
      * This method is called to update the contents of the element to reflect the value of the property.
@@ -149,11 +173,13 @@ function PropertyField(property, element){
      * @param locked {boolean} True if the field should be locked, false if it should be unlocked.
      */
     this.lock = function(locked){
-        if(locked) element.attr("locked", "true");
-        else element.removeAttr("locked");
-        property.setMetadata({"locked": locked});
+        this.setMetadata("locked", locked);
         this.input.enabled = !locked;
     };
+    this.setFontSize = function(size){
+        this.setMetadata("font-size", size);
+        element.css("font-size", size + "px");
+    }
 }
 
 /**
@@ -185,24 +211,15 @@ function AutoField(property, element){
      * Only sets the stored value if the property is overridden, also changes the font and locked metadata as expected.
      */
     this.init = function(){
-        // Only set the value if the property is overridden.
-        let val = property.get();
-        if(val !== null){
-            property.update(val);
-        }else if(element.attr("overridden")){
+        // If there is no property data but there is persistent data, override the property data.
+        if(property.getMetadata("overridden") === null && this.getMetadata("overridden") === "true"){
             property.set(element.html());
         }
 
-        // Update the locked state if it is stored in metadata or if it is set on the element.
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock(true);
-            lock.toggle(true);
-        }
-
-        // Update the font size if it is stored in metadata
-        let font = property.getMetadata("font");
-        if(font) element.css("font-size", font + "px");
+        // Set any metadata that should be synced
+        this.lock(this.getMetadata("locked") === "true");
+        lock.toggle(this.getMetadata("locked") === "true");
+        this.setFontSize(this.getMetadata("font-size"));
     };
 
     // If the input is edited, it is only a single line, so the enter key should save the edit.
@@ -222,19 +239,7 @@ function AutoField(property, element){
      */
     this.update = function(val){
         superUpdate(val);
-        if(property.overridden){
-            this.input.enabled = true;
-            override.disabled = true;
-            reset.disabled = false;
-            lock.disabled = false;
-            element.attr("overridden", "true");
-        }else{
-            this.input.enabled = false;
-            override.disabled = false;
-            reset.disabled = true;
-            lock.disabled = true;
-            element.removeAttr("overridden");
-        }
+        this.setOverridden(property.overridden);
     };
 
     /**
@@ -243,12 +248,26 @@ function AutoField(property, element){
     this.override = function(){
         this.input.edit();
     };
+
     /**
      * Resets the property if it is overridden.
      */
     this.reset = function(){
         property.reset();
     };
+
+    /**
+     * Forces this field to be set to overridden or not based on the boolean given.
+     *
+     * @param overridden {Boolean} If this field is overridden (true) or reset (false)
+     */
+    this.setOverridden = function(overridden){
+        this.setMetadata("overridden", overridden);
+        this.input.enabled = overridden;
+        override.disabled = overridden;
+        reset.disabled = !overridden;
+        lock.disabled = !overridden;
+    }
 }
 
 /**
@@ -332,32 +351,11 @@ function LongTextField(property, element){
 
         fontSizeInput.val(parseInt(element.css("font-size")));
 
-        // Toggle dynamic font size on if it is set in the metadata.
-        let dynamic = property.getMetadata("dynamic");
-        if(dynamic === "true" || (dynamic === null && element.attr("dynamic"))){
-            this.setDynamic(true);
-            dynamicFont.toggle(true);
-        }
-
-        // Set the min font to its value, if it is not in the metadata, use the fit default.
-        let minFont = property.getMetadata("min-font");
-        if(minFont === null && element.attr("min-font")){
-            minFont = parseInt(element.attr("min-font"));
-        }else if(minFont === null){
-            minFont = this.fit.minSize;
-        }
-        // Must call setMinFont to update the context menu
-        this.setMinFont(minFont);
-
-        //SEt the max font to its value, if it is not in the metadata, use the fit default.
-        let maxFont = property.getMetadata("max-font");
-        if(maxFont === null && element.attr("max-font")){
-            maxFont = parseInt(element.attr("max-font"));
-        }else if(maxFont === null){
-            maxFont = this.fit.maxSize;
-        }
-        // Must call setMaxFont to update the context menu
-        this.setMaxFont(maxFont);
+        // Set any metadata that should be synced
+        this.setDynamic(this.getMetadata("dynamic") === "true");
+        dynamicFont.toggle(this.getMetadata("dynamic") === "true");
+        this.setMinFont(this.getMetadata("min-font") || this.fit.minSize);
+        this.setMaxFont(this.getMetadata("max-font") || this.fit.maxSize);
     };
 
     /**
@@ -365,26 +363,17 @@ function LongTextField(property, element){
      * @param dynamic {boolean} True if dynamic font size is enabled, false otherwise.
      */
     this.setDynamic = function(dynamic){
-        if(dynamic) element.attr("dynamic", "true");
-        else element.removeAttr("dynamic");
-        property.setMetadata({"dynamic": dynamic});
+        this.setMetadata("dynamic", dynamic);
         this.fit.autoFit = dynamic;
         minFont.disabled = !dynamic;
         maxFont.disabled = !dynamic;
+        minFontInput.prop("disabled", !dynamic);
+        maxFontInput.prop("disabled", !dynamic);
     };
 
-    /**
-     * Sets the font of this field, should be called so that the context menu is updated and the metadata is saved.
-     * @param size {number} The size in pixels the font is set to.
-     */
-    this.setFont = function(size){
-        element.css("font-size", size + "px");
-        property.setMetadata({"font": size});
-        fontSizeInput.val(size);
-    };
     // Set the font size whenever the input is changed so that the context menu updates.
     this.input.onChange(function(){
-        this.setFont(parseInt(element.css("font-size")));
+        this.setFontSize(parseInt(element.css("font-size")));
     }.bind(this));
 
     /**
@@ -392,8 +381,7 @@ function LongTextField(property, element){
      * @param size {number} The size in pixels the min font is set to.
      */
     this.setMinFont = function(size){
-        element.attr("min-font", size);
-        property.setMetadata({"min-font": size});
+        this.setMetadata("min-font", size);
         this.fit.minSize = size;
         minFontInput.val(size);
     };
@@ -402,8 +390,7 @@ function LongTextField(property, element){
      * @param size {number} The size in pixels the max font is set to.
      */
     this.setMaxFont = function(size){
-        element.attr("max-font", size);
-        property.setMetadata({"max-font": size});
+        this.setMetadata("max-font", size);
         this.fit.maxSize = size;
         maxFontInput.val(size);
     };
@@ -411,7 +398,7 @@ function LongTextField(property, element){
     // The event listeners for the context menu items cannot be applied directly to the inputs because they are
     // removed when the inputs are removed from the dom (context menu closing)
     $("body").on("input", "#" + FONT_INPUT, function(){
-        this.setFont(parseInt(fontSizeInput.val()));
+        this.setFontSize(parseInt(fontSizeInput.val()));
     }.bind(this));
     $("body").on("input", "#" + MIN_FONT_INPUT, function(){
         this.setMinFont(parseInt(minFontInput.val()));
@@ -445,20 +432,14 @@ function ToggleField(property, element){
      * Sets the value based on the cycle attribute instead of the content.
      */
     this.init = function(){
-        // Set the value of to the cycle
-        let val = property.get();
-        if(val){
-            property.update();
-        }else if(element.attr("cycle")){
+        // Set the value of to the cycle if there is no property value
+        if(property.get() === null && element.attr("cycle")){
             property.set(parseInt(element.attr("cycle")));
         }
 
-        // Locking is supported although font size is not.
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock(true);
-            lock.toggle(true);
-        }
+        // Set any metadata that should be synced
+        this.lock(this.getMetadata("locked") === "true");
+        lock.toggle(this.getMetadata("locked") === "true");
     };
 
     /**
@@ -511,20 +492,14 @@ function ImageField(property, element){
      * Initializes locked as normal, but initializes based on the image tag being included instead of content.
      */
     this.init = function(){
-        // Set the value if there is an image present
-        let val = property.get();
-        if(val){
-            property.update();
-        }else if(element.find("img").length > 0){
+        // Set the value if there is an image present and it is not in the property.
+        if(property.get() === null && element.find("img").length > 0){
             property.set(element.find("img").attr("src"));
         }
 
-        // Lock as normal
-        let locked = property.getMetadata("locked");
-        if(locked === "true" || (locked === null && element.attr("locked"))){
-            this.lock(true);
-            lock.toggle(true);
-        }
+        // Set any metadata that should be synced
+        this.lock(this.getMetadata("locked") === "true");
+        lock.toggle(this.getMetadata("locked") === "true");
     };
 
     /**
@@ -532,7 +507,7 @@ function ImageField(property, element){
      * @param val - The encoded image source to embed.
      */
     this.update = function(val){
-        element.html("<img src='" + val + "'>");
+        if(val) element.html("<img src='" + val + "'>");
     };
 
     let fileInput = $("<input type='file' accept='image/*'>");
