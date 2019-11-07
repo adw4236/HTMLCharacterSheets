@@ -1,3 +1,7 @@
+/**
+ * This file contains CSS regarding the popups and context menus for consistency across any popup created.
+ */
+
 .popup{
     position: fixed;
     background-color: white;

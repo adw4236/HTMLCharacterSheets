@@ -1,3 +1,7 @@
+/**
+ * This file contains CSS regarding the fields that are displayed on the page.  Fields are any input that holds
+ * property information.
+ */
 .page .text, .page .long_text{
     background-color: #e4f2ff;
     cursor: text;

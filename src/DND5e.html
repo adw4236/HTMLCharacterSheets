@@ -3,21 +3,26 @@
     <head>
         <title>Character</title>
 
+        <!-- Lib -->
+        <script src="lib/jquery.min.js"></script>
+
+        <!-- Common Styles -->
         <link rel="stylesheet" href="general/css/general.css">
         <link rel="stylesheet" href="general/css/print.css">
         <link rel="stylesheet" href="general/css/popup.css">
         <link rel="stylesheet" href="general/css/fields.css">
-        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-general.css">
-        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-background.css">
-        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-spells.css">
 
-        <script src="lib/jquery.min.js"></script>
-
+        <!-- Common Scripts -->
         <script src="general/js/general.js"></script>
         <script src="general/js/popups.js"></script>
         <script src="general/js/components.js"></script>
         <script src="general/js/fields.js"></script>
         <script src="general/js/property.js"></script>
+
+        <!-- Properties -->
+        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-general.css">
+        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-background.css">
+        <link rel="stylesheet" href="sheet/dnd5e/positions/properties-spells.css">
         <script src="sheet/dnd5e/properties/properties-general.js"></script>
         <script src="sheet/dnd5e/properties/properties-background.js"></script>
         <script src="sheet/dnd5e/properties/properties-spells.js"></script>
@@ -30,6 +35,10 @@
                 <div data-open="page-spells"><img src="sheet/dnd5e/res/icon-spells.svg"></div>
             </div>
             <div class="page" id="page-general">
+                <img src="sheet/dnd5e/res/page-general.svg">
+
+                <!-- Properties -->
+
                 <div class="text" id="name"></div>
                 <div class="text" id="class"></div>
                 <div class="text" id="level"></div>
@@ -150,10 +159,12 @@
                 <div class="long_text" id="flaws" dynamic="true"></div>
 
                 <div class="long_text" id="features" dynamic="true"></div>
-
-                <img src="sheet/dnd5e/res/page-general.svg">
             </div>
             <div class="page" id="page-background">
+                <img src="sheet/dnd5e/res/page-background.svg">
+
+                <!-- Properties -->
+
                 <div class="text" id="name-background"></div>
 
                 <div class="text" id="age"></div>
@@ -170,10 +181,12 @@
                 <div class="image" id="symbol"></div>
                 <div class="long_text" id="additional_features" dynamic="true"></div>
                 <div class="long_text" id="treasure" dynamic="true"></div>
-
-                <img src="sheet/dnd5e/res/page-background.svg">
             </div>
             <div class="page" id="page-spells">
+                <img src="sheet/dnd5e/res/page-spells.svg">
+
+                <!-- Properties -->
+
                 <div class="text" id="spellcasting_class"></div>
                 <div class="text" id="spellcasting_ability"></div>
                 <div class="text" id="spell_save_dc"></div>
@@ -399,8 +412,6 @@
                 <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_6"></div>
                 <div class="text spell spells_col_3" id="lvl_9_spell_7"></div>
                 <div class="toggle spell_prep spells_col_3" id="lvl_9_spell_prepared_7"></div>
-
-                <img src="sheet/dnd5e/res/page-spells.svg">
             </div>
         </div>
     </body>

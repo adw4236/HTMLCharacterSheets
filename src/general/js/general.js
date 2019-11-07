@@ -1,3 +1,7 @@
+/**
+ * This file contains code that is general to the application as a whole and not to a certain subsystem.
+ */
+
 $(function(){
 
     // Open the default tab

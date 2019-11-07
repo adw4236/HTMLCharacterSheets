@@ -1,3 +1,6 @@
+/**
+ * This file contains styling specific to printing to ensure that all pages will be printed in a readable manner.
+ */
 @media print{
     .nav{
         display: none;
