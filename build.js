@@ -18,24 +18,40 @@ function start(){
     mkdirp.sync(work);
     mkdirp.sync(out);
 
-    fs.readdir(src, function(err, files){
-        let processes = [];
-        files.forEach(function(file){
-            if(file.endsWith(".html")){
-                processes.push(process(file));
-            }
-        });
+    let processes = [];
 
-        Promise.all(processes).then(end);
-    });
+    let args = process.argv.slice(2);
+    if(args.length > 0){
+        args.forEach(function(file){
+            if(!file.endsWith(".html")) file += ".html";
+            processes.push(processHTML(file));
+        });
+    }else{
+        fs.readdir(src, function(err, files){
+            files.forEach(function(file){
+                if(file.endsWith(".html")){
+                    processes.push(processHTML(file));
+                }
+            });
+        });
+    }
+
+    Promise.all(processes).then(end);
 }
 function end(){
     rimraf.sync(work);
 }
 
-function process(file){
+function processHTML(file){
     return new Promise(function(resolve, reject){
         fs.readFile(path.join(src, file), "utf8", function(err, contents) {
+            if(err){
+                console.log(err.message);
+                return;
+            }
+
+            console.log("Processing:", file);
+
             let replacements = {};
             let processes = [];
 
@@ -87,7 +103,7 @@ function process(file){
                             replacements[found] = contents;
                             resolve();
                         }
-                    })
+                    });
                 }));
 
                 svg = svg_regex.exec(contents);
@@ -102,10 +118,11 @@ function process(file){
                 fs.writeFile(path.join(work, file), bundled, function(err){
                     if(err) reject(err);
                     minifyHTML(file).then(function(min){
+                        console.log("Finished:", file);
                         resolve(min);
                     });
                 });
-            })
+            });
         });
     });
 }
